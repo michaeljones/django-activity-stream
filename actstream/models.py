@@ -5,6 +5,7 @@ from django.utils.translation import ugettext as _
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timesince import timesince as djtimesince
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.models import Site
 
 
 try:
@@ -32,6 +33,8 @@ class Follow(models.Model):
     actor_only = models.BooleanField("Only follow actions where "
                                      "the object is the target.", default=True)
     started = models.DateTimeField(default=now)
+    site = models.ForeignKey(Site)
+
     objects = FollowManager()
 
     class Meta:
@@ -93,6 +96,8 @@ class Action(models.Model):
     timestamp = models.DateTimeField(default=now)
 
     public = models.BooleanField(default=True)
+
+    site = models.ForeignKey(Site)
 
     objects = actstream_settings.get_action_manager()
 
