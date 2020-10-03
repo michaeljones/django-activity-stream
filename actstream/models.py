@@ -27,15 +27,15 @@ class Follow(models.Model):
     """
     Lets a user follow the activities of any specific actor
     """
-    user = models.ForeignKey(user_model_label, db_index=True)
+    user = models.ForeignKey(user_model_label, db_index=True, on_delete=models.CASCADE)
 
-    content_type = models.ForeignKey(ContentType, db_index=True)
+    content_type = models.ForeignKey(ContentType, db_index=True, on_delete=models.CASCADE)
     object_id = models.CharField(max_length=255, db_index=True)
     follow_object = generic.GenericForeignKey()
     actor_only = models.BooleanField("Only follow actions where "
                                      "the object is the target.", default=True)
     started = models.DateTimeField(default=now, db_index=True)
-    site = models.ForeignKey(Site)
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)
 
     objects = FollowManager()
 
@@ -77,7 +77,7 @@ class Action(models.Model):
 
     """
     actor_content_type = models.ForeignKey(ContentType, related_name='actor',
-                                           db_index=True)
+                                           db_index=True, on_delete=models.CASCADE)
     actor_object_id = models.CharField(max_length=255, db_index=True)
     actor = generic.GenericForeignKey('actor_content_type', 'actor_object_id')
 
@@ -85,13 +85,13 @@ class Action(models.Model):
     description = models.TextField(blank=True, null=True)
 
     target_content_type = models.ForeignKey(ContentType, blank=True, null=True,
-                                            related_name='target', db_index=True)
+                                            related_name='target', db_index=True, on_delete=models.CASCADE)
     target_object_id = models.CharField(max_length=255, blank=True, null=True, db_index=True)
     target = generic.GenericForeignKey('target_content_type',
                                        'target_object_id')
 
     action_object_content_type = models.ForeignKey(ContentType, blank=True, null=True,
-                                                   related_name='action_object', db_index=True)
+                                                   related_name='action_object', db_index=True, on_delete=models.CASCADE)
     action_object_object_id = models.CharField(max_length=255, blank=True, null=True, db_index=True)
     action_object = generic.GenericForeignKey('action_object_content_type',
                                               'action_object_object_id')
@@ -100,7 +100,7 @@ class Action(models.Model):
 
     public = models.BooleanField(default=True, db_index=True)
 
-    site = models.ForeignKey(Site)
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)
 
     objects = actstream_settings.get_action_manager()
 
