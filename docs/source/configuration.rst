@@ -1,5 +1,5 @@
 Configuration
-==============
+=============
 
 
 Model Registration
@@ -9,39 +9,23 @@ In order to have your models be either an actor, target, or action object they m
 In v0.5 and above, actstream has a registry of all actionable model classes.
 When you register them, actstream sets up certain GenericRelations that are required for generating activity streams.
 
-You normally call register right after your model is defined (models.py) but you can call it anytime before you need to generate actions or activity streams.
-
-.. code-block:: python
-
-    # myapp/models.py
-    from actstream import registry
-
-    class MyModel(models.Model):
-        ...
-
-    # Django < 1.7
-    registry.register(MyModel)
-
 For Django versions 1.7 or later, you should use `AppConfig <https://docs.djangoproject.com/en/dev/ref/applications/#configuring-applications>`_.
 
 .. code-block:: python
 
     # myapp/apps.py
     from django.apps import AppConfig
-    from actstream import registry
 
     class MyAppConfig(AppConfig):
         name = 'myapp'
 
         def ready(self):
+            from actstream import registry
             registry.register(self.get_model('MyModel'))
 
     # myapp/__init__.py
     default_app_config = 'myapp.apps.MyAppConfig'
 
-.. note::
-
-    Introducing the registry change makes the ``ACTSTREAM_SETTINGS['MODELS']`` setting obsolete so please use the register functions instead.
 
 Settings
 --------
@@ -62,6 +46,10 @@ Here is an example of what you can set in your ``settings.py``
 
 .. note::
 
+    Please decide early on whether you want to ``USE_JSONFIELD`` or not, as the ``Action.data`` field will be removed during initial migrations when this option is set to ``False`` (the default).
+
+.. note::
+
     In v0.5 and above, since only Django>=1.4 is supported all generic lookups fall back to `QuerySet.prefetch_related <https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.prefetch_related>`_
     so the ``USE_PREFETCH`` and ``GFK_FETCH_DEPTH`` settings have been deprecated.
 
@@ -71,7 +59,7 @@ Supported settings are defined below.
 .. _manager:
 
 MANAGER
-********
+*******
 
 The action manager is the `Django manager <https://docs.djangoproject.com/en/dev/topics/db/managers/>`_ interface used for querying activity data from the database.
 
@@ -87,12 +75,12 @@ FETCH_RELATIONS
 ***************
 
 Set this to ``False`` to disable ``select_related`` and ``prefetch_related`` when querying for any streams.
-When ``True``, related generic foreign keys will be prefetched for stream generation (preferrable).
+When ``True``, related generic foreign keys will be prefetched for stream generation (preferable).
 
 Defaults to ``True``
 
 USE_PREFETCH
-*************
+************
 
 .. deprecated:: 0.5
 

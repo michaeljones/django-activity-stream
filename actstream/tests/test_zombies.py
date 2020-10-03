@@ -1,13 +1,12 @@
 from random import choice
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import connection
-from django.utils.six import text_type
 
-from actstream.compat import get_user_model
 from actstream.signals import action
 from actstream.models import model_stream
-from .base import ActivityBaseTestCase
+from actstream.tests.base import ActivityBaseTestCase
 
 
 class ZombieTest(ActivityBaseTestCase):
@@ -46,7 +45,7 @@ class ZombieTest(ActivityBaseTestCase):
     def check_query_count(self, queryset):
         ci = len(connection.queries)
 
-        result = list([map(text_type, (x.actor, x.target, x.action_object))
+        result = list([map(str, (x.actor, x.target, x.action_object))
                        for x in queryset])
         self.assertTrue(len(connection.queries) - ci <= 4,
                         'Too many queries, got %d expected no more than 4' %
@@ -62,4 +61,3 @@ class ZombieTest(ActivityBaseTestCase):
         queryset = model_stream(self.User)[:5]
         result = self.check_query_count(queryset)
         self.assertEqual(len(result), 5)
-

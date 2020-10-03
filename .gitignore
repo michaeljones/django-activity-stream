@@ -8,3 +8,5 @@ __pycache__
 /coverage/
 /.coverage
 /django_activity_stream.egg-info
+.idea/
+*.egg-info
