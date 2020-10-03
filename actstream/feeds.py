@@ -1,7 +1,7 @@
 import json
 
 from django.shortcuts import get_object_or_404
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.feedgenerator import Atom1Feed, rfc3339_date
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.syndication.views import Feed, add_domain

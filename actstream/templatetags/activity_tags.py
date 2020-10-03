@@ -1,5 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.template import Variable, Library, Node, TemplateSyntaxError
 from django.template.loader import render_to_string
 

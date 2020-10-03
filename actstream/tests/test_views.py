@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.six.moves.urllib.parse import urlencode
 
 from actstream import models
