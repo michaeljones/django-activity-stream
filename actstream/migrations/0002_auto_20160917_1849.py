@@ -15,13 +15,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='action',
             name='site',
-            field=models.ForeignKey(default=1, to='sites.Site'),
+            field=models.ForeignKey(default=1, to='sites.Site', on_delete=models.CASCADE),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='follow',
             name='site',
-            field=models.ForeignKey(default=1, to='sites.Site'),
+            field=models.ForeignKey(default=1, to='sites.Site', on_delete=models.CASCADE),
             preserve_default=False,
         ),
     ]
